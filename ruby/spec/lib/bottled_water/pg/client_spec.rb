@@ -27,6 +27,23 @@ module BottledWater
         end
       end
 
+      describe '#initialize' do
+
+        context 'with a block as argument' do
+
+          it 'returns a configured Bottled Water client', public: true do
+
+            subject = Client.new do |config|
+              config.postgres = 'postgres://alice:P4ss_w0Rd@localhost'
+            end
+
+            expect(subject).to be_instance_of Client
+            expect(subject.database_url).to eq 'postgres://alice:P4ss_w0Rd@localhost'
+            expect(subject.postgres).to eq 'postgres://alice:P4ss_w0Rd@localhost'
+          end
+        end
+      end
+
       describe '#postgres' do
 
         before(:each) do
