@@ -5,6 +5,49 @@ A Ruby client for [Bottled Water for PostgreSQL][bottledwater].
 
   [bottledwater]: https://github.com/confluentinc/bottledwater-pg
 
+Usage
+-----
+
+Install [bottledwater-pg][bottledwater-quickstart], then add the gem to your `Gemfile`:
+
+```ruby
+# Gemfile
+
+gem 'bottled_water-pg', '0.1.0' # see semver.org
+```
+
+Create a `BottledWater::PG` instance:
+
+```ruby
+require 'bottled_water/pg'
+
+client = BottledWater::PG.new
+
+client.configure do |config|
+  config.postgres 'postgres://localhost'
+end
+```
+
+Then define how you want the changes stream to be processed:
+
+```ruby
+client.consume_changes do |transaction|
+  transaction.changes.each do |change|
+    case change
+    when BottledWater::PG::Insert
+      puts "Row inserted into table #{change.table}: #{change.row.inspect}" # this is a hash
+    when BottledWater::PG::Update
+      puts "Row with primary key #{change.key.inspect} in table #{change.table} changed to: #{change.row.inspect}"
+    when BottledWater::PG::Delete
+      puts "Row with primary key #{change.key.inspect} in table #{change.table} deleted"
+    end
+  end
+  puts "Transaction #{transaction.xid} committed"
+end
+```
+
+  [bottledwater-quickstart]: https://github.com/confluentinc/bottledwater-pg#quickstart
+
 License
 -------
 
