@@ -21,10 +21,10 @@ Create a `BottledWater::PG` instance:
 ```ruby
 require 'bottled_water/pg'
 
-client = BottledWater::PG.new
+client = BottledWater::PG::Client.new
 
 client.configure do |config|
-  config.postgres 'postgres://localhost'
+  config.postgres = 'postgres://localhost'
 end
 ```
 
@@ -47,6 +47,20 @@ end
 ```
 
   [bottledwater-quickstart]: https://github.com/confluentinc/bottledwater-pg#quickstart
+
+Development
+-----------
+
+RSpec [tags][tags] are used to categorize the spec examples.
+
+Spec examples that are tagged as `public` describe aspects of the gem public API, and MAY be considered as the gem documentation.
+
+The `private` or `protected` specs are written for development purpose only. Because they describe internal behaviour which may change at any moment without notice, they are only executed as a secondary task by the [continuous integration service][travis] and SHOULD be ignored.
+
+Run `rake spec:public` to print the gem public documentation.
+
+  [tags]: https://www.relishapp.com/rspec/rspec-core/v/3-1/docs/command-line/tag-option
+  [travis]: https://travis-ci.org/gonzalo-bulnes/simple_token_authentication/builds
 
 License
 -------
