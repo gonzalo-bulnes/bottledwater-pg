@@ -6,6 +6,12 @@ module BottledWater
 
       let(:client) { Client.new }
 
+      before(:each) do
+        @subject = client
+      end
+
+      it_behaves_like 'a Bottled Water for PostgreSQL client'
+
       it 'responds to #postgres', public: true do
         expect(client).to respond_to :postgres
       end
@@ -15,10 +21,6 @@ module BottledWater
       end
 
       describe '#database_url' do
-
-        before(:each) do
-          @subject = client
-        end
 
         it_behaves_like 'a configuration option', 'database_url'
 
@@ -45,10 +47,6 @@ module BottledWater
       end
 
       describe '#postgres' do
-
-        before(:each) do
-          @subject = client
-        end
 
         it_behaves_like 'a configuration option', 'database_url'
 
