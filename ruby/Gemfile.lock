@@ -1,0 +1,17 @@
+PATH
+  remote: .
+  specs:
+    bottled_water-pg (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bottled_water-pg!
+
+BUNDLED WITH
+   1.10.6
