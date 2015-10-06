@@ -13,5 +13,10 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/gonzalo-bulnes/bottledwater-pg"
   gem.license       = "Apache-2.0" # see https://spdx.org/licenses
 
-  gem.files = Dir["{doc,lib}/**/*", "Gemfile", "README.md"]
+  gem.files = Dir["{doc,lib}/**/*", "Gemfile", "Rakefile", "README.md"]
+  gem.test_files = Dir["spec/**/*"]
+
+  gem.add_dependency "rake", "~> 10.4"
+
+  gem.add_development_dependency "rspec", "~> 3.0"
 end
