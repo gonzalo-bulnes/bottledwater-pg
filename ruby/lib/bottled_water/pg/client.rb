@@ -1,3 +1,5 @@
+require 'ffi'
+
 require 'bottled_water/pg/configuration'
 
 module BottledWater
@@ -12,6 +14,7 @@ module BottledWater
     #    end
     #
     class Client
+      extend FFI::Library
       include Configuration
 
       def initialize

@@ -2,12 +2,14 @@ PATH
   remote: .
   specs:
     bottled_water-pg (0.1.0)
+      ffi (~> 1.0)
       rake (~> 10.4)
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.2.5)
+    ffi (1.9.10)
     rake (10.4.2)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
