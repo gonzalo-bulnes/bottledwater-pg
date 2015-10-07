@@ -10,10 +10,6 @@ module BottledWater
         @subject = client
       end
 
-      it 'responds to #puts', private: true, temporary: true do
-        expect(client.send(:puts, 'This is a temporary example.')).to eq 29
-      end
-
       it_behaves_like 'a Bottled Water for PostgreSQL client'
 
       it 'responds to #postgres', public: true do

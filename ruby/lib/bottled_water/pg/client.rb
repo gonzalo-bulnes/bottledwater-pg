@@ -21,9 +21,6 @@ module BottledWater
         yield self if block_given?
       end
 
-      ffi_lib FFI::Library::LIBC
-      attach_function :puts, [ :string ], :int
-
     end
   end
 end
