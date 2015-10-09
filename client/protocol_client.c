@@ -275,9 +275,9 @@ int process_frame_delete(avro_value_t *record_val, frame_reader_t reader, uint64
 }
 
 frame_reader_t frame_reader_new() {
-    frame_reader_t reader = malloc(sizeof(frame_reader));
+    frame_reader_t reader = malloc(sizeof(struct frame_reader));
     check_alloc(reader);
-    memset(reader, 0, sizeof(frame_reader));
+    memset(reader, 0, sizeof(struct frame_reader));
     reader->num_schemas = 0;
     reader->capacity = 16;
     reader->schemas = malloc(reader->capacity * sizeof(void*));

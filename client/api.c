@@ -1,4 +1,6 @@
 #include "api.h"
+#include "protocol_client.h"
+#include "connect.h"
 
 #define DEFAULT_REPLICATION_SLOT "bottledwater"
 #define APP_NAME "bottledwater"

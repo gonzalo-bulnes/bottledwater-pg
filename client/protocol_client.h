@@ -1,45 +1,8 @@
 #ifndef PROTOCOL_CLIENT_H
 #define PROTOCOL_CLIENT_H
 
+#include "api.h"
 #include "protocol.h"
-#include "postgres_ext.h"
-
-/* Parameters: context, wal_pos, xid */
-typedef int (*begin_txn_cb)(void *, uint64_t, uint32_t);
-
-/* Parameters: context, wal_pos, xid */
-typedef int (*commit_txn_cb)(void *, uint64_t, uint32_t);
-
-/* Parameters: context, wal_pos, relid,
- *             key_schema_json, key_schema_len, key_schema,
- *             row_schema_json, row_schema_len, row_schema */
-typedef int (*table_schema_cb)(void *, uint64_t, Oid,
-        const char *, size_t, avro_schema_t,
-        const char *, size_t, avro_schema_t);
-
-/* Parameters: context, wal_pos, relid,
- *             key_bin, key_len, key_val,
- *             new_bin, new_len, new_val */
-typedef int (*insert_row_cb)(void *, uint64_t, Oid,
-        const void *, size_t, avro_value_t *,
-        const void *, size_t, avro_value_t *);
-
-/* Parameters: context, wal_pos, relid,
- *             key_bin, key_len, key_val,
- *             old_bin, old_len, old_val,
- *             new_bin, new_len, new_val */
-typedef int (*update_row_cb)(void *, uint64_t, Oid,
-        const void *, size_t, avro_value_t *,
-        const void *, size_t, avro_value_t *,
-        const void *, size_t, avro_value_t *);
-
-/* Parameters: context, wal_pos, relid,
- *             key_bin, key_len, key_val,
- *             old_bin, old_len, old_val */
-typedef int (*delete_row_cb)(void *, uint64_t, Oid,
-        const void *, size_t, avro_value_t *,
-        const void *, size_t, avro_value_t *);
-
 
 typedef struct {
     Oid                 relid;       /* Uniquely identifies a table, even when it is renamed */
@@ -54,7 +17,7 @@ typedef struct {
     avro_reader_t       avro_reader; /* In-memory buffer reader */
 } schema_list_entry;
 
-typedef struct {
+struct frame_reader {
     void *cb_context;                /* Pointer that is passed to callbacks */
     begin_txn_cb on_begin_txn;       /* Called to indicate that the following events belong to one transaction */
     commit_txn_cb on_commit_txn;     /* Called to indicate the end of events from a particular transaction */
@@ -69,9 +32,7 @@ typedef struct {
     avro_value_iface_t *frame_iface; /* Avro generic interface for the frame schema */
     avro_value_t frame_value;        /* Avro value for a frame */
     avro_reader_t avro_reader;       /* In-memory buffer reader */
-} frame_reader;
-
-typedef frame_reader *frame_reader_t;
+};
 
 int parse_frame(frame_reader_t reader, uint64_t wal_pos, char *buf, int buflen);
 frame_reader_t frame_reader_new(void);

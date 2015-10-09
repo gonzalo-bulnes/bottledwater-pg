@@ -36,8 +36,8 @@ int snapshot_tuple(client_context_t context, PGresult *res, int row_number);
  * db_client_start() is called, various fields in the struct need to be
  * initialized. */
 client_context_t db_client_new() {
-    client_context_t context = malloc(sizeof(client_context));
-    memset(context, 0, sizeof(client_context));
+    client_context_t context = malloc(sizeof(struct client_context));
+    memset(context, 0, sizeof(struct client_context));
     return context;
 }
 
