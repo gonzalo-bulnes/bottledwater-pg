@@ -24,6 +24,9 @@ module BottledWater
       ffi_lib FFI::Library::LIBC
       attach_function :puts, [ :string ], :int
 
+      ffi_lib '/usr/local/lib/libbottledwater.so'
+      attach_function :bw_client_context_new, [], :pointer
+
     end
   end
 end

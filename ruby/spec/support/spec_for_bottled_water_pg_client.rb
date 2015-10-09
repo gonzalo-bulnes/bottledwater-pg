@@ -13,11 +13,11 @@ RSpec.shared_examples 'a Bottled Water for PostgreSQL client' do
     :bw_run#, :bw_stop (not yet implemented in Bottled Water)
   ]
 
-  describe 'it implements the Bottles Water client API', public: true do
+  describe 'it implements the Bottled Water client API', public: true do
 
     BOTTLED_WATER_PG_API.each do |function_name|
 
-      it "responds to #{function_name}" #do expect(@subject).to respond_to function_name end
+      it "responds to #{function_name}" do expect(@subject).to respond_to function_name end
 
     end
   end
