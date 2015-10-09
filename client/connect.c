@@ -27,6 +27,7 @@ int exec_sql(client_context_t context, char *query);
 int client_connect(client_context_t context);
 int replication_slot_exists(client_context_t context, bool *exists);
 int snapshot_start(client_context_t context);
+int snapshot_failed(client_context_t context);
 int snapshot_poll(client_context_t context);
 int snapshot_tuple(client_context_t context, PGresult *res, int row_number);
 
@@ -94,7 +95,11 @@ int db_client_poll(client_context_t context) {
             return err;
         }
 
-        check(err, snapshot_poll(context));
+        err = snapshot_poll(context);
+        if (err) {
+            snapshot_failed(context);
+            return err;
+        }
         context->status = 1;
 
         /* If the snapshot is finished, switch over to the replication stream */
@@ -109,7 +114,6 @@ int db_client_poll(client_context_t context) {
         return err;
     }
 }
-
 
 /* Blocks until more data is received from the server. You don't have to use
  * this if you have your own select loop. */
@@ -150,6 +154,7 @@ int db_client_wait(client_context_t context) {
     if (context->sql_conn && !PQconsumeInput(context->sql_conn)) {
         client_error(context, "Could not receive snapshot data: %s",
                 PQerrorMessage(context->sql_conn));
+        snapshot_failed(context);
         return EIO;
     }
     return 0;
@@ -328,6 +333,19 @@ int snapshot_start(client_context_t context) {
         check(err, begin_txn(cb_context, context->repl.start_lsn, 0));
     }
     return 0;
+}
+
+/* Drops the replication slot which was created by the failed snapshot attempt,
+ * so that the snapshot is retried when the user tries again. */
+int snapshot_failed(client_context_t context) {
+    int err = 0;
+    err = replication_slot_drop(&context->repl);
+
+    context->on_log(context, "Dropping replication slot since the snapshot did not complete successfully.");
+    if (err != 0) {
+        context->on_log(context, context->repl.error);
+    }
+    return err;
 }
 
 /* Reads the next result row from the snapshot query, parses and processes it.
