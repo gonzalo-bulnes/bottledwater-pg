@@ -2,4 +2,5 @@
 *.so
 /client/bwtest
 /client/libbottledwater.a
+/client/libbottledwater.so*
 /kafka/bottledwater

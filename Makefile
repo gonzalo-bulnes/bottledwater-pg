@@ -7,6 +7,7 @@ all:
 
 install:
 	$(MAKE) -C ext install
+	$(MAKE) -C client install
 
 clean:
 	$(MAKE) -C ext clean
