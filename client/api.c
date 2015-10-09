@@ -1,19 +1,5 @@
 #include "api.h"
 
-#define DEFAULT_REPLICATION_SLOT "bottledwater"
-#define APP_NAME "bottledwater"
-
-/* The name of the logical decoding output plugin with which the replication
- * slot is created. This must match the name of the Postgres extension. */
-#define OUTPUT_PLUGIN "bottledwater"
-
-#define ensure(context, call) { \
-    if (call) { \
-        fprintf(stderr, "%s: %s\n", progname, context->error); \
-        exit_nicely(context); \
-    } \
-}
-
 static char *progname = "Bottled Water client";
 
 static void exit_nicely(client_context_t context) {

@@ -7,6 +7,20 @@
 #include "protocol_client.h"
 #include "replication.h"
 
+#define DEFAULT_REPLICATION_SLOT "bottledwater"
+#define APP_NAME "bottledwater"
+
+/* The name of the logical decoding output plugin with which the replication
+ * slot is created. This must match the name of the Postgres extension. */
+#define OUTPUT_PLUGIN "bottledwater"
+
+#define ensure(context, call) { \
+    if (call) { \
+        fprintf(stderr, "%s: %s\n", progname, context->error); \
+        exit_nicely(context); \
+    } \
+}
+
 /* Allocate a new client context */
 client_context_t bw_client_context_new(void);
 /* Free a client context */
