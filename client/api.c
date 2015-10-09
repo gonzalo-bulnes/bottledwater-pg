@@ -63,6 +63,10 @@ void bw_set_on_delete_row_callback(client_context_t client_context, delete_row_c
   client_context->repl.frame_reader->on_delete_row = callback;
 }
 
+void bw_set_on_log_callback(client_context_t client_context, log_cb callback) {
+  client_context->on_log = callback;
+}
+
 int bw_run(client_context_t context) {
     ensure(context, db_client_start(context));
 

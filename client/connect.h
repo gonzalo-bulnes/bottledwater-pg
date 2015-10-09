@@ -5,6 +5,9 @@
 
 #define CLIENT_CONTEXT_ERROR_LEN 512
 
+/* Parameters: context, message */
+typedef int (*log_cb)(void *, char *);
+
 typedef struct {
     char *conninfo, *app_name;
     PGconn *sql_conn;
@@ -13,6 +16,7 @@ typedef struct {
     bool taking_snapshot;
     int status; /* 1 = message was processed on last poll; 0 = no data available right now; -1 = stream ended */
     char error[CLIENT_CONTEXT_ERROR_LEN];
+    log_cb on_log;     /* Called when message is logged */
 } client_context;
 
 typedef client_context *client_context_t;

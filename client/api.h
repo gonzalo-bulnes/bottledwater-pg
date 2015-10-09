@@ -33,6 +33,7 @@ void bw_set_on_table_schema_callback(client_context_t client_context, table_sche
 void bw_set_on_insert_row_callback(client_context_t client_context, insert_row_cb callback);
 void bw_set_on_update_row_callback(client_context_t client_context, update_row_cb callback);
 void bw_set_on_delete_row_callback(client_context_t client_context, delete_row_cb callback);
+void bw_set_on_log_callback(client_context_t client_context, log_cb callback);
 
 /* Start the client */
 int bw_run(client_context_t client_context);
