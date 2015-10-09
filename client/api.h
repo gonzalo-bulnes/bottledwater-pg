@@ -46,10 +46,6 @@ typedef int (*log_cb)(void *, char *);
 /* See client/connect.h */
 typedef struct client_context *client_context_t;
 
-/* See client/protocol_client.h */
-typedef struct frame_reader *frame_reader_t;
-
-
 /* Allocate a new client context */
 client_context_t bw_client_context_new(void);
 /* Free a client context */

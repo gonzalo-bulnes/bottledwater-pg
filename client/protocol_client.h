@@ -34,6 +34,9 @@ struct frame_reader {
     avro_reader_t avro_reader;       /* In-memory buffer reader */
 };
 
+/* See client/protocol_client.h */
+typedef struct frame_reader *frame_reader_t;
+
 int parse_frame(frame_reader_t reader, uint64_t wal_pos, char *buf, int buflen);
 frame_reader_t frame_reader_new(void);
 void frame_reader_free(frame_reader_t reader);
