@@ -1,4 +1,4 @@
-SOURCES=replication.c protocol.c protocol_client.c connect.c
+SOURCES=replication.c protocol.c protocol_client.c connect.c api.c
 EXEC_SRC=bwtest.c
 EXECUTABLE=bwtest
 STATICLIB=libbottledwater.a
