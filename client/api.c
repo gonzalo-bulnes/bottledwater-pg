@@ -1,20 +1,18 @@
 #include "api.h"
 
-static char *progname = "Bottled Water client";
+#define DEFAULT_REPLICATION_SLOT "bottledwater"
+#define APP_NAME "bottledwater"
 
-static void exit_nicely(client_context_t context) {
-    // If a snapshot was in progress and not yet complete, and an error occurred, try to
-    // drop the replication slot, so that the snapshot is retried when the user tries again.
-    if (context->taking_snapshot) {
-        fprintf(stderr, "Dropping replication slot since the snapshot did not complete successfully.\n");
-        if (replication_slot_drop(&context->repl) != 0) {
-            fprintf(stderr, "%s: %s\n", progname, context->repl.error);
-        }
-    }
+/* The name of the logical decoding output plugin with which the replication
+ * slot is created. This must match the name of the Postgres extension. */
+#define OUTPUT_PLUGIN "bottledwater"
 
-    frame_reader_free(context->repl.frame_reader);
-    db_client_free(context);
-    exit(1);
+#define ensure(context, err, call) { \
+    err = call; \
+    if (err != 0) { \
+        context->on_log(context, context->error); \
+        return err; \
+    } \
 }
 
 /* Allocate a new client context */
@@ -68,13 +66,14 @@ void bw_set_on_log_callback(client_context_t client_context, log_cb callback) {
 }
 
 int bw_run(client_context_t context) {
-    ensure(context, db_client_start(context));
+    int err = 0;
+    ensure(context, err, db_client_start(context));
 
-    while (context->status >= 0) { /* TODO install signal handler for graceful shutdown */
-        ensure(context, db_client_poll(context));
+    while (context->status >= 0) {
+        ensure(context, err, db_client_poll(context));
 
         if (context->status == 0) {
-            ensure(context, db_client_wait(context));
+            ensure(context, err, db_client_wait(context));
         }
     }
     return 0;
