@@ -64,13 +64,7 @@ void bw_set_on_delete_row_callback(client_context_t client_context, delete_row_c
 }
 
 int bw_run(client_context_t context) {
-
-    /* THis could be skipped. */
-    /*if (!context->taking_snapshot) {
-        fprintf(stderr, "Replication slot \"%s\" exists, streaming changes from %X/%X.\n",
-                context->repl.slot_name,
-                (uint32) (context->repl.start_lsn >> 32), (uint32) context->repl.start_lsn);
-    }*/
+    ensure(context, db_client_start(context));
 
     while (context->status >= 0) { /* TODO install signal handler for graceful shutdown */
         ensure(context, db_client_poll(context));
