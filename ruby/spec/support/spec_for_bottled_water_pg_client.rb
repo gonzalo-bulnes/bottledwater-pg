@@ -9,6 +9,7 @@ RSpec.shared_examples 'a Bottled Water for PostgreSQL client' do
     :bw_set_on_insert_row_callback,
     :bw_set_on_update_row_callback,
     :bw_set_on_delete_row_callback,
+    :bw_set_on_log_callback,
     :bw_run#, :bw_stop (not yet implemented in Bottled Water)
   ]
 
