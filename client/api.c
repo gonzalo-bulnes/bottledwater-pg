@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "api.h"
 #include "protocol_client.h"
 #include "connect.h"
@@ -21,7 +19,6 @@
 
 /* Allocate a new client context */
 client_context_t bw_client_context_new(void) {
-    printf("Hello Bottled Water!\n");
     frame_reader_t frame_reader = frame_reader_new();
     client_context_t context = db_client_new();
 
