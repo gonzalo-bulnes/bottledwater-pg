@@ -1,0 +1,31 @@
+FROM postgres:9.4
+
+MAINTAINER Gonzalo Bulnes Guilpain
+LABEL description="An Ubuntu container with libbottedwater installed on it."
+
+# Install dependencies which don't change often
+RUN apt-get update
+RUN apt-get install -y build-essential
+RUN apt-get install -y postgresql-server-dev-9.4
+RUN apt-get install -y curl
+RUN apt-get install -y ruby
+RUN apt-get install -y libffi-dev
+
+RUN gem install bundler
+
+# Install Ruby using RVM
+# RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 || \
+#     \curl -sSL https://rvm.io/mpapis.asc | gpg --import -
+# RUN \curl -sSL https://get.rvm.io | bash -s stable
+# RUN /usr/local/rvm/bin/rvm install 2.2.3
+# RUN . /usr/local/rvm/scripts/rvm
+# RUN /usr/local/rvm/bin/rvm use --create 2.2.3@bottledwater-pg
+
+
+ADD . /tmp/bottledwater
+WORKDIR /tmp/bottledwater
+
+# Build and install the libbottledwater shared library
+RUN make && make client install
+
+RUN cd ruby && bundle install
