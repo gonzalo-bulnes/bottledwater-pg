@@ -51,6 +51,8 @@ end
 Development
 -----------
 
+### Documentation
+
 RSpec [tags][tags] are used to categorize the spec examples.
 
 Spec examples that are tagged as `public` describe aspects of the gem public API, and MAY be considered as the gem documentation.
@@ -61,6 +63,25 @@ Run `rake spec:public` to print the gem public documentation.
 
   [tags]: https://www.relishapp.com/rspec/rspec-core/v/3-1/docs/command-line/tag-option
   [travis]: https://travis-ci.org/gonzalo-bulnes/simple_token_authentication/builds
+
+### Getting Started
+
+The Ruby adapter depends on the `libbottledwater` shared library. A Docker image is available to make development easier, and to be sure the adapter is tested against the correct version of the library.
+
+```bash
+cd bottledwater-pg
+
+# build
+docker build -t gonzalobulnes/libbottledwater:dev -f Dockerfile.libbottledwater+ruby .
+
+# run the Ruby adapter test suite
+docker run gonzalobulnes/libbottledwater:dev
+
+# or open a terminal in the context of the Ruby adapter
+docker run -t -i gonzalobulnes/libbottledwater:dev /bin/bash
+
+# Note: the 'dev' tag is arbitrary when you build the image for local use.
+```
 
 License
 -------

@@ -10,17 +10,9 @@ RUN apt-get install -y postgresql-server-dev-9.4
 RUN apt-get install -y curl
 RUN apt-get install -y ruby
 RUN apt-get install -y libffi-dev
+RUN apt-get install -y ruby-dev
 
 RUN gem install bundler
-
-# Install Ruby using RVM
-# RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 || \
-#     \curl -sSL https://rvm.io/mpapis.asc | gpg --import -
-# RUN \curl -sSL https://get.rvm.io | bash -s stable
-# RUN /usr/local/rvm/bin/rvm install 2.2.3
-# RUN . /usr/local/rvm/scripts/rvm
-# RUN /usr/local/rvm/bin/rvm use --create 2.2.3@bottledwater-pg
-
 
 ADD . /tmp/bottledwater
 WORKDIR /tmp/bottledwater
@@ -28,4 +20,7 @@ WORKDIR /tmp/bottledwater
 # Build and install the libbottledwater shared library
 RUN make && make client install
 
-RUN cd ruby && bundle install
+WORKDIR /tmp/bottledwater/ruby
+RUN bundle install
+
+CMD rake
