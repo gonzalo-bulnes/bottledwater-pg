@@ -48,7 +48,7 @@ module BottledWater
 
       describe '#postgres' do
 
-        it_behaves_like 'a configuration option', 'database_url'
+        it_behaves_like 'a configuration option', 'postgres'
 
         it "defaults to 'postgres://localhost'", public: true do
           expect(client.postgres).to eq 'postgres://localhost'
