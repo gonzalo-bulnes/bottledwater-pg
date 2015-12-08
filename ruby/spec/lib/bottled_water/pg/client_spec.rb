@@ -54,6 +54,16 @@ module BottledWater
           expect(client.postgres).to eq 'postgres://localhost'
         end
       end
+
+      describe '#hello_ruby', private: true do
+
+        it 'actually returns the return value of the C function' do
+          callback_return_value = 42 # this value is arbitrarily hardcoded
+          client_context = subject.bw_client_context_new
+          callback = Client::SimpleCallback
+          expect(subject.hello_ruby(client_context, callback)).to eq callback_return_value
+        end
+      end
     end
   end
 end

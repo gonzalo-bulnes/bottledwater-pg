@@ -63,6 +63,9 @@ void bw_set_on_log_callback(client_context_t client_context, log_cb callback);
 /* Start the client */
 int bw_run(client_context_t client_context);
 
+typedef int (*simple_cb)(int);
+int hello_ruby(client_context_t client_context, simple_cb callback);
+
 /* Stop the client - not yet implemented */
 /* int bw_stop(client_context_t client_context); */
 

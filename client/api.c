@@ -80,3 +80,7 @@ int bw_run(client_context_t context) {
     }
     return 0;
 }
+
+int hello_ruby(client_context_t client_context, simple_cb callback) {
+    return callback(42);
+}

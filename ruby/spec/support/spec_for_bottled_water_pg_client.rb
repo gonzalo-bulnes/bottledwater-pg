@@ -17,7 +17,7 @@ RSpec.shared_examples 'a Bottled Water for PostgreSQL client' do
 
     BOTTLED_WATER_PG_API.each do |function_name|
 
-      it "responds to #{function_name}" #do expect(@subject).to respond_to function_name end
+      xit "responds to #{function_name}" do expect(@subject).to respond_to function_name end
 
     end
   end

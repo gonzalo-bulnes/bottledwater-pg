@@ -21,6 +21,16 @@ module BottledWater
         yield self if block_given?
       end
 
+      ffi_lib '/usr/local/lib/libbottledwater.so'
+
+      # void -> client_context_t
+      attach_function :bw_client_context_new, [], :pointer
+
+      attach_function :hello_ruby, [:pointer, :pointer], :int
+
+      SimpleCallback = FFI::Function.new(:int, [:int]) do |callback_argument|
+        callback_argument
+      end
     end
   end
 end
