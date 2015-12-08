@@ -55,6 +55,29 @@ module BottledWater
         end
       end
 
+      describe '#register_insert_row_callback', protected: true do
+
+        context 'when called with a FFI::Function instance as argument' do
+
+          it 'registers the function as callabck through bw_set_on_insert_row_callback' do
+            callback_function = FFI::Function.new(:void, []) do; end
+            context = double()
+            allow(subject).to receive(:bw_client_context_new).and_return(context)
+
+            expect(subject).to receive(:bw_set_on_insert_row_callback).with(context, callback_function)
+            subject.register_insert_row_callback(callback_function)
+          end
+        end
+
+        it 'defaults to register InsertRowCallback through bw_set_on_insert_row_callback' do
+          context = double()
+          allow(subject).to receive(:bw_client_context_new).and_return(context)
+
+          expect(subject).to receive(:bw_set_on_insert_row_callback).with(context, Client::InsertRowCallback)
+          subject.register_insert_row_callback
+        end
+      end
+
       describe '#hello_ruby', private: true do
 
         it 'actually returns the return value of the C function' do
