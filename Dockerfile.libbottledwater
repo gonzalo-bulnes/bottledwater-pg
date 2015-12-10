@@ -20,7 +20,6 @@ RUN apt-get update && apt-get install -y \
     librdkafka-dev
 
 # Finish the libsnappy installation
-# See https://github.com/confluentinc/bottledwater-pg/tree/v0.1#building
 RUN mkdir /usr/local/lib/pkgconfig && \
     echo "Name: libsnappy\nDescription: Snappy is a compression library\nVersion: 1.1.2\nURL: https://google.github.io/snappy/Libs: -L/usr/local/lib -lsnappy\nCflags: -I/usr/local/include\n" > /usr/local/lib/pkgconfig/libsnappy.pc
 
