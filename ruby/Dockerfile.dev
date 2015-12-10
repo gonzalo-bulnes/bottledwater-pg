@@ -12,42 +12,36 @@ LABEL description.1="Provides a development environment for the Bottled Water Ru
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install dependencies which don't change often
-RUN apt-get update
-RUN apt-get install -y apt-utils
-RUN apt-get install -y pkg-config
-RUN apt-get install -y build-essential
-RUN apt-get install -y postgresql-server-dev-9.4
-RUN apt-get install -y curl
-RUN apt-get install -y ruby
-RUN apt-get install -y libffi-dev
-RUN apt-get install -y ruby-dev
-RUN apt-get install -y cmake
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    pkg-config \
+    build-essential \
+    postgresql-server-dev-9.4 \
+    curl \
+    ruby \
+    libffi-dev \
+    ruby-dev \
+    cmake \
+    libsnappy-dev \
+    libjansson-dev \
+    libcurl4-openssl-dev \
+    librdkafka-dev
 
-# Install libsnappy
+# Finish the libsnappy installation
 # See https://github.com/confluentinc/bottledwater-pg/tree/v0.1#building
-RUN apt-get install -y libsnappy-dev
-RUN mkdir /usr/local/lib/pkgconfig
-RUN echo "Name: libsnappy\nDescription: Snappy is a compression library\nVersion: 1.1.2\nURL: https://google.github.io/snappy/Libs: -L/usr/local/lib -lsnappy\nCflags: -I/usr/local/include\n" > /usr/local/lib/pkgconfig/libsnappy.pc
+RUN mkdir /usr/local/lib/pkgconfig && \
+    echo "Name: libsnappy\nDescription: Snappy is a compression library\nVersion: 1.1.2\nURL: https://google.github.io/snappy/Libs: -L/usr/local/lib -lsnappy\nCflags: -I/usr/local/include\n" > /usr/local/lib/pkgconfig/libsnappy.pc
 
 # Install Avro
 WORKDIR /tmp
-RUN curl http://apache.arvixe.com/avro/stable/c/avro-c-1.7.7.tar.gz > /tmp/avro-c-1.7.7.tar.gz
-RUN tar -xzf /tmp/avro-c-1.7.7.tar.gz
-RUN mkdir /tmp/avro-c-1.7.7/build
+RUN curl http://apache.arvixe.com/avro/stable/c/avro-c-1.7.7.tar.gz > /tmp/avro-c-1.7.7.tar.gz && \
+    tar -xzf /tmp/avro-c-1.7.7.tar.gz && \
+    mkdir /tmp/avro-c-1.7.7/build
 WORKDIR /tmp/avro-c-1.7.7/build
-RUN cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local/ -DCMAKE_BUILD_TYPE=RelWithDebInfo
-RUN make
-RUN make test
-RUN make install
-
-# Install Jansson
-RUN apt-get install -y libjansson-dev
-
-# Install libcurl
-RUN apt-get install -y libcurl4-openssl-dev
-
-# Install librdkafka
-RUN apt-get install -y librdkafka-dev
+RUN cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local/ -DCMAKE_BUILD_TYPE=RelWithDebInfo && \
+    make && \
+    make test && \
+    make install
 
 # Build and install the libbottledwater shared library
 # Add everything except the Ruby adapter files (to avoid invalidating the cache)
@@ -56,9 +50,9 @@ ADD ./client/ /tmp/bottledwater/client/
 ADD ./ext/ /tmp/bottledwater/ext/
 ADD ./kafka/ /tmp/bottledwater/kafka/
 WORKDIR /tmp/bottledwater
-RUN make clean
-RUN make client all
-RUN make client install
+RUN make clean && \
+    make client all && \
+    make client install
 
 # Install the Ruby dependencies manager
 # this step is placed here for caching purpose
