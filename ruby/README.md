@@ -69,18 +69,24 @@ Run `rake spec:public` to print the gem public documentation.
 The Ruby adapter depends on the `libbottledwater` shared library. A Docker image is available to make development easier, and to be sure the adapter is tested against the correct version of the library.
 
 ```bash
-cd bottledwater-pg
+cd bottledwater-pg/ruby
 
-# build
-docker build -t gonzalobulnes/libbottledwater:dev -f Dockerfile.libbottledwater+ruby .
+# Build the image
+# Please note that the Docker image build context MUST be the Bottled Water root directory.
+docker build -t gonzalobulnes/libbottledwater-ruby:dev -f Dockerfile.dev ..
 
 # run the Ruby adapter test suite
-docker run gonzalobulnes/libbottledwater:dev
+docker run gonzalobulnes/libbottledwater-ruby:dev
 
 # or open a terminal in the context of the Ruby adapter
-docker run -t -i gonzalobulnes/libbottledwater:dev /bin/bash
+docker run -t -i gonzalobulnes/libbottledwater-ruby:dev /bin/bash
+# run `rake` at the command prompt to run the test suite in technicolor!
 
-# Note: the 'dev' tag is arbitrary when you build the image for local use.
+# Typically, you'll want to update the image and run the test suite at once:
+docker build -t gonzalobulnes/libbottledwater-ruby:dev -f Dockerfile.dev .. && \
+docker run gonzalobulnes/libbottledwater-ruby:dev
+
+# Note: the 'dev' tag is arbitrary, I use it to make explicit that the image is updated constantly.
 ```
 
 License
